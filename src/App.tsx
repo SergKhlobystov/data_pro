@@ -14,7 +14,7 @@ const TRANSLATIONS = {
     heroTitle: 'Генеруйте реалістичні дані',
     heroSubtitle: 'Миттєво',
     heroDesc: 'Професійна платформа для створення синтетичних даних. Підвищуйте свої навички аналізу на реалістичних сценаріях.',
-    version: 'v2.5.1',
+    version: 'v2.7.1',
     generateBtn: 'Згенерувати таблицю',
     generatingBtn: 'Генерація даних...',
     downloadBtn: 'Завантажити CSV',
@@ -46,7 +46,7 @@ const TRANSLATIONS = {
     heroTitle: 'Generate realistic data',
     heroSubtitle: 'Instantly',
     heroDesc: 'Professional platform for creating synthetic data. Level up your analysis skills with realistic scenarios.',
-    version: 'v2.5.1',
+    version: 'v2.7.1',
     generateBtn: 'Generate Table',
     generatingBtn: 'Generating data...',
     downloadBtn: 'Download CSV',
@@ -78,7 +78,7 @@ const TRANSLATIONS = {
     heroTitle: 'Генерируйте реалистичные данные',
     heroSubtitle: 'Мгновенно',
     heroDesc: 'Профессиональная платформа для создания синтетических данных. Повышайте свои навыки анализа на реалистичных сценариях.',
-    version: 'v2.5.1',
+    version: 'v2.7.1',
     generateBtn: 'Сгенерировать таблицу',
     generatingBtn: 'Генерация данных...',
     downloadBtn: 'Скачать CSV',
@@ -106,9 +106,12 @@ const TRANSLATIONS = {
   }
 };
 
-const Logo = ({ variant = 'default' }: { variant?: 'default' | 'header' }) => (
-  <div className={`flex items-center gap-4 ${variant === 'default' ? 'group cursor-pointer' : ''}`}>
-    <div className={`relative ${variant === 'header' ? 'w-12 h-12' : 'w-16 h-16'} flex items-center justify-center`}>
+const Logo = ({ variant = 'default', onClick }: { variant?: 'default' | 'header', onClick?: () => void }) => (
+  <div 
+    onClick={onClick}
+    className={`flex items-center gap-3 sm:gap-4 group cursor-pointer ${variant === 'header' ? 'scale-90 sm:scale-110 origin-left' : ''}`}
+  >
+    <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center">
       {/* Pixel/Table Breaking Animation */}
       <div className="absolute inset-0 grid grid-cols-4 grid-rows-4 gap-0.5 opacity-40 group-hover:opacity-100 transition-opacity">
         {[...Array(16)].map((_, i) => (
@@ -127,19 +130,19 @@ const Logo = ({ variant = 'default' }: { variant?: 'default' | 'header' }) => (
       </div>
       
       {/* Main Icon */}
-      <div className={`relative z-10 ${variant === 'header' ? 'w-10 h-10' : 'w-12 h-12'} bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20`}>
-        <svg viewBox="0 0 24 24" className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+      <div className="relative z-10 w-9 h-9 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+        <svg viewBox="0 0 24 24" className="w-4 h-4 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
           <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
           <line x1="3" y1="9" x2="21" y2="9" />
           <line x1="9" y1="21" x2="9" y2="9" />
         </svg>
       </div>
     </div>
-    <div className={`flex ${variant === 'header' ? 'flex-row items-center gap-2' : 'flex-col'} leading-none`}>
-      <span className={`font-black ${variant === 'header' ? 'text-2xl' : 'text-4xl'} tracking-tighter uppercase bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-600 to-cyan-500`}>
+    <div className={`flex flex-col leading-none ${variant === 'header' ? 'lg:flex-row lg:items-center lg:gap-4' : ''}`}>
+      <span className={`font-black tracking-tighter uppercase bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-600 to-cyan-500 ${variant === 'header' ? 'text-lg sm:text-xl lg:text-3xl' : 'text-2xl sm:text-4xl'}`}>
         GO DATA
       </span>
-      <span className={`${variant === 'header' ? 'text-lg font-black text-gray-800 dark:text-gray-200' : 'text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.4em] mt-1'}`}>
+      <span className={`font-black uppercase tracking-[0.2em] sm:tracking-[0.4em] ${variant === 'header' ? 'text-[8px] sm:text-[10px] lg:text-lg text-gray-800 dark:text-gray-200 lg:mt-0' : 'text-[10px] text-gray-400 dark:text-gray-500 mt-1'}`}>
         Analyst Pro
       </span>
     </div>
@@ -171,6 +174,31 @@ export default function App() {
     }
   }, [darkMode]);
 
+  useEffect(() => {
+    if (data && window.innerWidth < 1024) {
+      const actionButtons = document.getElementById('action-buttons');
+      if (actionButtons) {
+        setTimeout(() => {
+          actionButtons.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+  }, [data]);
+
+  const scrollToPresets = () => {
+    const presetsSection = document.getElementById('presets-section');
+    if (presetsSection) {
+      presetsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const resetApp = () => {
+    setSelectedLevel('easy');
+    setData(null);
+    setIsGenerating(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const t = TRANSLATIONS[lang];
 
   const presets: Preset[] = [
@@ -200,35 +228,35 @@ export default function App() {
     return data.rows.slice(0, 10);
   }, [data]);
 
-  const buttonClasses = "w-full max-w-md h-20 flex items-center justify-center gap-4 rounded-full font-bold text-xl shadow-xl transition-all active:scale-95 hover:scale-[1.02] cursor-pointer";
+  const buttonClasses = "w-full max-w-md h-16 sm:h-20 flex items-center justify-center gap-3 sm:gap-4 rounded-full font-bold text-lg sm:text-xl shadow-xl transition-all active:scale-95 hover:scale-[1.02] cursor-pointer";
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] dark:bg-[#0A0A0B] text-[#1D1D1F] dark:text-[#F5F5F7] font-sans selection:bg-blue-100 transition-colors duration-300">
       {/* Header */}
       <header className="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-black/70 border-b border-gray-200 dark:border-gray-800">
-        <div className="max-w-6xl mx-auto px-6 h-24 flex items-center justify-between">
-          <Logo variant="header" />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-20 sm:h-24 flex items-center justify-between gap-2">
+          <Logo variant="header" onClick={resetApp} />
           
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2 sm:gap-6">
             <div className="relative group">
               <button
                 onClick={() => setDarkMode(!darkMode)}
-                className="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-gray-700 cursor-pointer"
+                className="p-2 sm:p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-gray-700 cursor-pointer"
                 aria-label={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
               >
-                {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                {darkMode ? <Sun className="w-4 h-4 sm:w-5 sm:h-5" /> : <Moon className="w-4 h-4 sm:w-5 sm:h-5" />}
               </button>
-              <div className="absolute top-full right-0 mt-2 px-3 py-1.5 bg-black text-white text-[10px] font-bold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+              <div className="absolute top-full right-0 mt-2 px-3 py-1.5 bg-black text-white text-[10px] font-bold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 hidden sm:block">
                 {darkMode ? (lang === 'ua' ? 'Світла тема' : lang === 'ru' ? 'Светлая тема' : 'Light Mode') : (lang === 'ua' ? 'Темна тема' : lang === 'ru' ? 'Темная тема' : 'Dark Mode')}
               </div>
             </div>
 
-            <div className="hidden md:flex items-center bg-gray-100 dark:bg-gray-800 p-1 rounded-xl">
+            <div className="flex items-center bg-gray-100 dark:bg-gray-800 p-0.5 sm:p-1 rounded-xl">
               {(['ua', 'en', 'ru'] as Language[]).map((l) => (
                 <button
                   key={l}
                   onClick={() => setLang(l)}
-                  className={`px-4 py-1.5 rounded-lg text-xs font-bold uppercase transition-all cursor-pointer ${
+                  className={`px-2 sm:px-4 py-1 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-bold uppercase transition-all cursor-pointer ${
                     lang === l ? 'bg-white dark:bg-gray-700 text-black dark:text-white shadow-sm' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
                   }`}
                 >
@@ -236,7 +264,7 @@ export default function App() {
                 </button>
               ))}
             </div>
-            <div className="text-sm text-gray-400 font-mono">
+            <div className="hidden sm:block text-sm text-gray-400 font-mono">
               {t.version}
             </div>
           </div>
@@ -245,14 +273,14 @@ export default function App() {
 
       <main className="max-w-6xl mx-auto px-6 py-12">
         {/* Hero Section */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <div className="inline-block px-4 py-1.5 bg-black text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-full mb-6">
             {t.subtitle}
           </div>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-black tracking-tighter mb-6"
+            className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-[1.1]"
           >
             {t.heroTitle}<br />
             <span className="text-slate-300">{t.heroSubtitle}</span>
@@ -261,16 +289,16 @@ export default function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-xl text-gray-500 max-w-2xl mx-auto font-medium"
+            className="text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto font-medium px-4"
           >
             {t.heroDesc}
           </motion.p>
         </div>
 
         {/* Preset Selection */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div id="presets-section" className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-12 sm:mb-16">
           {presets.map((preset, index) => (
-            <motion.button
+            <motion.div
               key={preset.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -279,15 +307,15 @@ export default function App() {
                 setSelectedLevel(preset.id as Level);
                 setData(null);
               }}
-              className={`relative p-8 rounded-[2.5rem] text-left transition-all duration-500 border-2 cursor-pointer ${
+              className={`relative p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] text-left transition-all duration-500 border-2 cursor-pointer flex flex-col ${
                 selectedLevel === preset.id 
-                ? 'bg-white dark:bg-gray-900 border-black dark:border-white shadow-2xl scale-[1.02]' 
+                ? 'bg-white dark:bg-gray-900 border-black dark:border-white shadow-2xl scale-[1.01] lg:scale-[1.02]' 
                 : 'bg-white/50 dark:bg-white/5 border-gray-200 dark:border-gray-800 hover:bg-white dark:hover:bg-white/10 hover:shadow-xl'
               }`}
             >
-              <div className="flex justify-between items-start mb-6">
-                <div className="flex flex-col gap-3">
-                  <span className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest ${
+              <div className="flex justify-between items-start mb-4 sm:mb-6">
+                <div className="flex flex-col gap-2 sm:gap-3">
+                  <span className={`px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-widest ${
                     preset.id === 'easy' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' :
                     preset.id === 'medium' ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400' :
                     'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
@@ -295,38 +323,66 @@ export default function App() {
                     {preset.id}
                   </span>
                   {/* Difficulty Indicator */}
-                  <div className="flex gap-1 h-2 w-24 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                  <div className="flex gap-1 h-1.5 sm:h-2 w-20 sm:w-24 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
                     <div className={`h-full ${preset.id === 'easy' ? 'w-1/3 bg-green-500' : preset.id === 'medium' ? 'w-2/3 bg-orange-500' : 'w-full bg-red-500'}`} />
                   </div>
                 </div>
                 {selectedLevel === preset.id && (
-                  <CheckCircle2 className="w-8 h-8 text-black dark:text-white" />
+                  <CheckCircle2 className="w-6 h-6 sm:w-8 sm:h-8 text-black dark:text-white" />
                 )}
               </div>
-              <h3 className="text-2xl font-black mb-3 tracking-tight dark:text-white">{preset.title}</h3>
-              <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-8 font-medium">
+              <h3 className="text-xl sm:text-2xl font-black mb-2 sm:mb-3 tracking-tight dark:text-white">{preset.title}</h3>
+              <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 sm:mb-8 font-medium">
                 {preset.description}
               </p>
-              <div className="flex gap-6 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                <div className="flex items-center gap-2">
-                  <TableIcon className="w-3 h-3" />
-                  {preset.rows.toLocaleString()}+
+              
+              <div className="mt-auto">
+                <div className="flex gap-4 sm:gap-6 text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <TableIcon className="w-3 h-3" />
+                    {preset.rows.toLocaleString()}+
+                  </div>
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <Columns className="w-3 h-3" />
+                    {preset.columns}C
+                  </div>
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <Info className="w-3 h-3" />
+                    {preset.months}M
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Columns className="w-3 h-3" />
-                  {preset.columns}C
-                </div>
-                <div className="flex items-center gap-2">
-                  <Info className="w-3 h-3" />
-                  {preset.months}M
-                </div>
+
+                {/* Mobile/Tablet Generate Button */}
+                {!data && (
+                  <motion.button
+                    whileTap={{ scale: 0.98 }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedLevel(preset.id as Level);
+                      handleGenerate();
+                    }}
+                    disabled={isGenerating}
+                    className={`w-full h-14 sm:h-16 flex items-center justify-center gap-3 rounded-2xl font-bold text-base sm:text-lg transition-all cursor-pointer ${
+                      selectedLevel === preset.id
+                      ? 'bg-black text-white shadow-lg'
+                      : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    } disabled:opacity-50 lg:hidden`}
+                  >
+                    {isGenerating && selectedLevel === preset.id ? (
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      <Play className="w-5 h-5 fill-current" />
+                    )}
+                    {isGenerating && selectedLevel === preset.id ? t.generatingBtn : t.generateBtn}
+                  </motion.button>
+                )}
               </div>
-            </motion.button>
+            </motion.div>
           ))}
         </div>
 
-        {/* Action Button */}
-        <div className="flex flex-col items-center gap-6 mb-20">
+        {/* Action Button (Desktop Generate or Global Download) */}
+        <div id="action-buttons" className="flex flex-col items-center gap-6 mb-20">
           <AnimatePresence mode="wait">
             {!data ? (
               <motion.button
@@ -336,7 +392,7 @@ export default function App() {
                 exit={{ opacity: 0, scale: 0.9 }}
                 onClick={handleGenerate}
                 disabled={isGenerating}
-                className={`${buttonClasses} bg-black hover:bg-gray-800 text-white disabled:opacity-50`}
+                className={`${buttonClasses} bg-black hover:bg-gray-800 text-white disabled:opacity-50 hidden lg:flex`}
               >
                 {isGenerating ? (
                   <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin" />
@@ -362,7 +418,10 @@ export default function App() {
                 <motion.button
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  onClick={() => setData(null)}
+                  onClick={() => {
+                    setData(null);
+                    scrollToPresets();
+                  }}
                   className={`${buttonClasses} bg-white dark:bg-gray-900 border-2 border-black dark:border-white text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black`}
                 >
                   <Play className="w-5 h-5" />
@@ -379,26 +438,26 @@ export default function App() {
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white dark:bg-gray-900 rounded-[3rem] shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden"
+              className="bg-white dark:bg-gray-900 rounded-[2rem] sm:rounded-[3rem] shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden"
             >
-              <div className="p-10 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gray-50/30 dark:bg-gray-800/30">
+              <div className="p-6 sm:p-10 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-gray-50/30 dark:bg-gray-800/30">
                 <div>
-                  <h2 className="text-2xl font-black tracking-tight dark:text-white">{t.previewTitle}</h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">{t.previewDesc}</p>
+                  <h2 className="text-xl sm:text-2xl font-black tracking-tight dark:text-white">{t.previewTitle}</h2>
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium">{t.previewDesc}</p>
                 </div>
-                <div className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest ${
+                <div className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-widest ${
                   selectedLevel === 'easy' ? 'text-green-600 bg-green-50 dark:bg-green-900/30 dark:text-green-400' : 'text-amber-600 bg-amber-50 dark:bg-amber-900/30 dark:text-amber-400'
                 }`}>
-                  <AlertCircle className="w-4 h-4" />
+                  <AlertCircle className="w-3.5 h-3.5 sm:w-4 h-4" />
                   {selectedLevel === 'easy' ? t.readyToAnalyze : t.needsCleaning}
                 </div>
               </div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+              <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
+                <table className="w-full text-left border-collapse min-w-[800px] sm:min-w-full">
                   <thead>
                     <tr className="bg-gray-50/50 dark:bg-gray-800/50">
                       {data.headers.map(header => (
-                        <th key={header} className="px-8 py-5 text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] whitespace-nowrap">
+                        <th key={header} className="px-6 sm:px-8 py-4 sm:py-5 text-[9px] sm:text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] whitespace-nowrap">
                           {header.replace(/_/g, ' ')}
                         </th>
                       ))}
@@ -408,7 +467,7 @@ export default function App() {
                     {previewRows.map((row, i) => (
                       <tr key={i} className="hover:bg-gray-50/30 dark:hover:bg-gray-800/30 transition-colors">
                         {data.headers.map(header => (
-                          <td key={header} className="px-8 py-5 text-sm whitespace-nowrap text-gray-600 dark:text-gray-300 font-medium">
+                          <td key={header} className="px-6 sm:px-8 py-4 sm:py-5 text-xs sm:text-sm whitespace-nowrap text-gray-600 dark:text-gray-300 font-medium">
                             {row[header] === '-' ? <span className="text-gray-300 dark:text-gray-700">-</span> : row[header] || <span className="text-gray-300 dark:text-gray-700 italic">null</span>}
                           </td>
                         ))}
@@ -425,7 +484,7 @@ export default function App() {
       {/* Footer */}
       <footer className="max-w-6xl mx-auto px-6 py-16 border-t border-gray-200 dark:border-gray-800 mt-20 text-center">
         <div className="flex flex-col items-center gap-6">
-          <Logo />
+          <Logo onClick={resetApp} />
           <p className="text-gray-400 dark:text-gray-500 text-xs font-bold uppercase tracking-widest">© 2026 {t.title}. {t.footerText}</p>
           <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7] font-black uppercase text-[10px] tracking-widest">
             <span className="text-gray-300 dark:text-gray-700">{t.madeBy}</span>
