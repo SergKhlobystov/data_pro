@@ -200,7 +200,7 @@ export default function App() {
     return data.rows.slice(0, 10);
   }, [data]);
 
-  const buttonClasses = "w-full max-w-md h-20 flex items-center justify-center gap-4 rounded-full font-bold text-xl shadow-xl transition-all active:scale-95 hover:scale-[1.02]";
+  const buttonClasses = "w-full max-w-md h-20 flex items-center justify-center gap-4 rounded-full font-bold text-xl shadow-xl transition-all active:scale-95 hover:scale-[1.02] cursor-pointer";
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] dark:bg-[#0A0A0B] text-[#1D1D1F] dark:text-[#F5F5F7] font-sans selection:bg-blue-100 transition-colors duration-300">
@@ -213,7 +213,7 @@ export default function App() {
             <div className="relative group">
               <button
                 onClick={() => setDarkMode(!darkMode)}
-                className="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
+                className="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-gray-700 cursor-pointer"
                 aria-label={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
               >
                 {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -228,7 +228,7 @@ export default function App() {
                 <button
                   key={l}
                   onClick={() => setLang(l)}
-                  className={`px-4 py-1.5 rounded-lg text-xs font-bold uppercase transition-all ${
+                  className={`px-4 py-1.5 rounded-lg text-xs font-bold uppercase transition-all cursor-pointer ${
                     lang === l ? 'bg-white dark:bg-gray-700 text-black dark:text-white shadow-sm' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
                   }`}
                 >
@@ -279,7 +279,7 @@ export default function App() {
                 setSelectedLevel(preset.id as Level);
                 setData(null);
               }}
-              className={`relative p-8 rounded-[2.5rem] text-left transition-all duration-500 border-2 ${
+              className={`relative p-8 rounded-[2.5rem] text-left transition-all duration-500 border-2 cursor-pointer ${
                 selectedLevel === preset.id 
                 ? 'bg-white dark:bg-gray-900 border-black dark:border-white shadow-2xl scale-[1.02]' 
                 : 'bg-white/50 dark:bg-white/5 border-gray-200 dark:border-gray-800 hover:bg-white dark:hover:bg-white/10 hover:shadow-xl'
@@ -433,7 +433,7 @@ export default function App() {
               href="https://www.linkedin.com/in/sergiy-khlobystov-310009390/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2"
+              className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 cursor-pointer"
             >
               Sergiy Khlobystov
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
