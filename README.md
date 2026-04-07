@@ -1,6 +1,6 @@
 # GO Data Analyst Pro
 
-[![Version](https://img.shields.io/badge/version-2.5.1-blue.svg)](https://github.com/serg-heavybeard/go-data-analyst)
+[![Version](https://img.shields.io/badge/version-2.7.1-blue.svg)](https://github.com/serg-heavybeard/go-data-analyst)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **GO Data Analyst Pro** — це професійний інструмент для генерації реалістичних синтетичних даних, створений спеціально для аналітиків, які хочуть відточити свої навички на практиці.
